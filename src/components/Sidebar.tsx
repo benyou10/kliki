@@ -2,26 +2,24 @@
 
 import React, { useEffect, useState } from 'react';
 import { 
-  Activity, 
-  Cpu, 
-  Database, 
-  BarChart3, 
-  Terminal, 
-  Play, 
-  CreditCard, 
-  FileCode, 
-  Users, 
-  Settings, 
+  LayoutDashboard,
+  Boxes,
+  Link2,
+  Settings,
+  LifeBuoy,
+  Plus,
   LogOut,
   Menu,
   X,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useLanguage } from '@/context/LanguageContext';
 import './sidebar.css';
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { t } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -29,16 +27,11 @@ export default function Sidebar() {
   }, [pathname]);
 
   const navItems = [
-    { name: 'Overview', icon: <Activity size={20} />, path: '/dashboard' },
-    { name: 'Instances', icon: <Cpu size={20} />, path: '/dashboard/engines' },
-    { name: 'Data', icon: <Database size={20} />, path: '/dashboard/data' },
-    { name: 'Analytics', icon: <BarChart3 size={20} />, path: '/dashboard/analytics' },
-    { name: 'API', icon: <Terminal size={20} />, path: '/dashboard/api' },
-    { name: 'Playground', icon: <Play size={20} />, path: '/dashboard/playground' },
-    { name: 'Billing', icon: <CreditCard size={20} />, path: '/dashboard/billing' },
-    { name: 'Logs', icon: <FileCode size={20} />, path: '/dashboard/logs' },
-    { name: 'Team', icon: <Users size={20} />, path: '/dashboard/team' },
-    { name: 'Settings', icon: <Settings size={20} />, path: '/dashboard/settings' },
+    { name: t('navDashboard'), icon: <LayoutDashboard size={20} />, path: '/dashboard' },
+    { name: t('navInstances'), icon: <Boxes size={20} />, path: '/dashboard/instances' },
+    { name: t('navIntegration'), icon: <Link2 size={20} />, path: '/dashboard/integration' },
+    { name: t('navSettings'), icon: <Settings size={20} />, path: '/dashboard/settings' },
+    { name: t('navSupport'), icon: <LifeBuoy size={20} />, path: '/dashboard/support' },
   ];
 
   return (
@@ -67,6 +60,9 @@ export default function Sidebar() {
         </Link>
         
         <nav className="sidebar-nav">
+          <Link href="/dashboard/instances/new" className="sidebar-cta" onClick={() => setMobileOpen(false)}>
+            <Plus size={18} /> {t('sidebarCreate')}
+          </Link>
           {navItems.map((item) => (
             <Link 
               key={item.path} 
@@ -83,7 +79,7 @@ export default function Sidebar() {
         <div className="sidebar-footer">
           <Link href="/" className="nav-item logout" onClick={() => setMobileOpen(false)}>
             <LogOut size={20} />
-            Back to site
+            {t('backToSite')}
           </Link>
         </div>
       </aside>

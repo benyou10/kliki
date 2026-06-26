@@ -119,10 +119,10 @@ export default function Home() {
             <motion.div className="comparison-card glass" variants={fadeUp} initial="hidden" whileInView="visible">
               <h3 className="text-muted">{t('classicalAI')}</h3>
               <ul className="comparison-list">
-                <li><span className="icon-no">✕</span> Shows the same products to every customer</li>
-                <li><span className="icon-no">✕</span> Needs weeks of setup and data collection</li>
-                <li><span className="icon-no">✕</span> Expensive to maintain and update</li>
-                <li><span className="icon-no">✕</span> Gets it wrong for new customers</li>
+                <li><span className="icon-no">✕</span> {t('trad1')}</li>
+                <li><span className="icon-no">✕</span> {t('trad2')}</li>
+                <li><span className="icon-no">✕</span> {t('trad3')}</li>
+                <li><span className="icon-no">✕</span> {t('trad4')}</li>
               </ul>
             </motion.div>
 
@@ -176,17 +176,17 @@ export default function Home() {
               <p>{t('builtInDesc')}</p>
               
               <div className="platform-list">
-                <div className="platform-item"><CheckCircle2 className="text-primary" size={20} /> <span><strong>Workspace isolation:</strong> Each customer account keeps its own data and key.</span></div>
-                <div className="platform-item"><CheckCircle2 className="text-primary" size={20} /> <span><strong>Live instance status:</strong> Monitor health, uptime, and event flow from the dashboard.</span></div>
-                <div className="platform-item"><CheckCircle2 className="text-primary" size={20} /> <span><strong>API-first workflow:</strong> Send events and fetch recommendations from the same control plane.</span></div>
+                <div className="platform-item"><CheckCircle2 className="text-primary" size={20} /> <span><strong>{t('plat1Title')}:</strong> {t('plat1Desc')}</span></div>
+                <div className="platform-item"><CheckCircle2 className="text-primary" size={20} /> <span><strong>{t('plat2Title')}:</strong> {t('plat2Desc')}</span></div>
+                <div className="platform-item"><CheckCircle2 className="text-primary" size={20} /> <span><strong>{t('plat3Title')}:</strong> {t('plat3Desc')}</span></div>
               </div>
             </motion.div>
 
             <motion.div className="integrations-logos" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-               <div className="logo-float shopify glass">Workspace</div>
-               <div className="logo-float woo glass">Instance</div>
-               <div className="logo-float react glass">API</div>
-               <div className="logo-float node glass">Insights</div>
+               <div className="logo-float shopify glass">{t('float1')}</div>
+               <div className="logo-float woo glass">{t('float2')}</div>
+               <div className="logo-float react glass">{t('float3')}</div>
+               <div className="logo-float node glass">{t('float4')}</div>
             </motion.div>
           </div>
         </div>
@@ -196,13 +196,13 @@ export default function Home() {
       <section className="integration-section container">
         <div className="integration-container">
           <motion.div className="integration-content" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-            <h2 className="section-title">Deploy, Observe, and Iterate.</h2>
+            <h2 className="section-title">{t('howTitle')}</h2>
             <ul className="checklist">
-              <li><GitCommit className="check-icon text-primary" size={24} /> <strong>Clear setup:</strong> Create the workspace, instance, and key in one flow.</li>
-              <li><Layers className="check-icon text-primary" size={24} /> <strong>Always current:</strong> Events and live status update as traffic arrives.</li>
-              <li><Code className="check-icon text-primary" size={24} /> <strong>API-first:</strong> Connect storefronts, marketplaces, or content apps.</li>
+              <li><GitCommit className="check-icon text-primary" size={24} /> <strong>{t('chk1Title')}:</strong> {t('chk1Desc')}</li>
+              <li><Layers className="check-icon text-primary" size={24} /> <strong>{t('chk2Title')}:</strong> {t('chk2Desc')}</li>
+              <li><Code className="check-icon text-primary" size={24} /> <strong>{t('chk3Title')}:</strong> {t('chk3Desc')}</li>
             </ul>
-            <Link href="/docs" className="button-secondary push-down">See the docs <ArrowRight size={18} /></Link>
+            <Link href="/docs" className="button-secondary push-down">{t('seeDocs')} <ArrowRight size={18} /></Link>
           </motion.div>
           
           <motion.div className="integration-code glass" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>

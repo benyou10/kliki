@@ -78,7 +78,7 @@ export default function Docs() {
           <hr />
 
           <h2 id="woocommerce">{t('docsNavWoo')}</h2>
-          <p>Use the ingestion flow to send views, clicks, add-to-cart actions, and purchases into the correct instance.</p>
+          <p>{t('docsWooBody')}</p>
 
           <hr />
 

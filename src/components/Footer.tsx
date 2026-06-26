@@ -33,26 +33,26 @@ const Footer = () => {
           </div>
           
           <div className="footer-column">
-            <h4>Solutions</h4>
+            <h4>{t('footerSolutions')}</h4>
             <Link href="/#ecommerce">{t('ecommerce')}</Link>
             <Link href="/#media">{t('media')}</Link>
             <Link href="/#research">{t('research')}</Link>
-            <Link href="/docs#instances">Workspaces</Link>
+            <Link href="/docs#instances">{t('footerStores')}</Link>
           </div>
 
           <div className="footer-column">
-            <h4>Company</h4>
+            <h4>{t('footerCompany')}</h4>
             <Link href="/contact">{t('contact')}</Link>
-            <Link href="/dashboard">Dashboard</Link>
-            <Link href="/docs">Documentation</Link>
-            <Link href="/pricing">Pricing</Link>
+            <Link href="/dashboard">{t('footerDashboard')}</Link>
+            <Link href="/docs">{t('footerDocumentation')}</Link>
+            <Link href="/pricing">{t('pricing')}</Link>
           </div>
         </div>
       </div>
-      
+
       <div className="footer-bottom container">
-        <p>&copy; {new Date().getFullYear()} Kliki. Recommendation infrastructure for commerce teams.</p>
-        <span className="badge glass">Production platform</span>
+        <p>&copy; {new Date().getFullYear()} {t('footerRights')}</p>
+        <span className="badge glass">{t('footerBadge')}</span>
       </div>
     </footer>
   );

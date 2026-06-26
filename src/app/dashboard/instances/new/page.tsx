@@ -1,137 +1,164 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { ArrowLeft, Database } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Copy, ExternalLink, Plus } from 'lucide-react';
 import Link from 'next/link';
-import '../instances.css';
+import { useAuth } from '@/context/AuthContext';
+import { useLanguage } from '@/context/LanguageContext';
+import '../../dashboard.css';
 
 export default function NewInstance() {
-  const router = useRouter();
+  const { client, isLoggedIn } = useAuth();
+  const { t } = useLanguage();
   const [instanceName, setInstanceName] = useState('');
-  const [subscriptionTier, setSubscriptionTier] = useState('Bronze');
-  const [platformType, setPlatformType] = useState('ecommerce');
-  const [domains, setDomains] = useState('');
+  const [websiteUrl, setWebsiteUrl] = useState('');
+  const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [created, setCreated] = useState<{
+    id: string;
+    instanceId: string;
+    apiKey: string;
+    integrationCode: string;
+  } | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
-    const response = await fetch('/api/dashboard/instances', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: instanceName,
-        subscriptionTier,
-        platformType,
-        domains,
-      }),
-    });
+    try {
+      const response = await fetch('/api/dashboard/instances', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: instanceName,
+          websiteUrl,
+          description,
+          clientId: client?.id,
+        }),
+      });
 
-    const result = await response.json().catch(() => null);
-    if (!response.ok) {
-      setError(result?.error || 'Unable to create instance. Please try again.');
+      const result = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(result?.error || t('createFailed'));
+      }
+
+      setCreated({
+        id: result.id,
+        instanceId: result.instanceId,
+        apiKey: result.apiKey,
+        integrationCode: result.integrationCode,
+      });
+    } catch (createError) {
+      setError(createError instanceof Error ? createError.message : t('createFailed'));
+    } finally {
       setLoading(false);
-      return;
     }
+  };
 
-    setLoading(false);
-    router.push(`/dashboard/instances/${result.id}`);
+  const copyValue = async (value: string) => {
+    await navigator.clipboard.writeText(value);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1500);
   };
 
   return (
     <main className="dashboard-main">
-      <header className="dashboard-header">
+      <header className="page-shell-header">
         <div>
-          <Link href="/dashboard" className="back-link">
-            <ArrowLeft size={16} /> Back to Dashboard
+          <Link href="/dashboard/instances" className="back-link">
+            <ArrowLeft size={16} /> {t('backToInstances')}
           </Link>
-          <h1 className="mt-4">Create a new workspace</h1>
-          <p className="subtitle">Provision a recommendation workspace with its own API key and remote instance id.</p>
+          <p className="eyebrow mt-3">{t('createInstance')}</p>
+          <h1>{t('superSimple')}</h1>
+          <p className="subtitle">{t('createInstanceSubtitle')}</p>
         </div>
       </header>
 
-      <section className="form-section glass">
-        <div className="form-header">
-          <Database className="text-primary" size={32} />
-          <div>
-            <h3>Workspace setup</h3>
-            <p>Deploy a dedicated tenant for one storefront, catalog, or content surface.</p>
-          </div>
-        </div>
+      {!isLoggedIn ? (
+        <section className="panel-surface dashboard-empty-state">
+          <p>{t('signInCreate')}</p>
+          <Link href="/login" className="button-primary mt-4 inline-flex">{t('goToLogin')}</Link>
+        </section>
+      ) : created ? (
+        <section className="create-success-layout">
+          <div className="panel-surface dashboard-panel success-panel">
+            <CheckCircle2 size={28} className="text-success" />
+            <h2>{t('instanceCreated')}</h2>
+            <p className="subtitle">{t('copyKeyOnce')}</p>
 
-        <form onSubmit={handleSubmit} className="setup-form">
+            <div className="secret-box">
+              <div>
+                <span className="meta-label">{t('apiKeyLabel')}</span>
+                <strong>{created.apiKey}</strong>
+              </div>
+              <button className="button-secondary button-small" type="button" onClick={() => copyValue(created.apiKey)}>
+                <Copy size={16} /> {copied ? t('copiedLabel') : t('copyLabel')}
+              </button>
+            </div>
+
+            <div className="secret-box">
+              <div>
+                <span className="meta-label">{t('integrationCodeLabel')}</span>
+                <code>{created.integrationCode}</code>
+              </div>
+              <button className="button-secondary button-small" type="button" onClick={() => copyValue(created.integrationCode)}>
+                <Copy size={16} /> {copied ? t('copiedLabel') : t('copyLabel')}
+              </button>
+            </div>
+
+            <div className="hero-actions mt-6">
+              <Link href={`/dashboard/instances/${created.id}`} className="button-primary button-large">
+                {t('viewInstanceDash')} <ArrowRight size={18} />
+              </Link>
+              <Link href="/dashboard/integration" className="button-outline button-large">
+                {t('integrationPageLabel')} <ExternalLink size={18} />
+              </Link>
+            </div>
+          </div>
+
+          <div className="panel-surface dashboard-panel">
+            <h3>{t('nextSteps')}</h3>
+            <ol className="step-list">
+              <li>{t('newStep1')}</li>
+              <li>{t('newStep2')}</li>
+              <li>{t('newStep3')}</li>
+            </ol>
+          </div>
+        </section>
+      ) : (
+        <section className="panel-surface dashboard-panel create-panel">
           {error && <div className="form-error">{error}</div>}
 
-          <div className="form-group">
-            <label htmlFor="instanceName">Workspace Name</label>
-            <input
-              type="text"
-              id="instanceName"
-              value={instanceName}
-              onChange={(e) => setInstanceName(e.target.value)}
-              placeholder="e.g. Summer Catalog Recommendations"
-              required
-              disabled={loading}
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="create-form">
+            <div className="form-group">
+              <label htmlFor="instanceName">{t('instanceNameLabel')}</label>
+              <input id="instanceName" value={instanceName} onChange={(e) => setInstanceName(e.target.value)} placeholder={t('phStoreName')} required disabled={loading} />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="subscriptionTier">Plan</label>
-            <select
-              id="subscriptionTier"
-              value={subscriptionTier}
-              onChange={(e) => setSubscriptionTier(e.target.value)}
-              disabled={loading}
-            >
-              <option value="Bronze">Bronze (8,000 DA/month)</option>
-              <option value="Argent">Argent (20,000 DA/month)</option>
-              <option value="Or">Or (55,000 DA/month)</option>
-              <option value="Platine">Platine (125,000 DA/month)</option>
-            </select>
-            <small className="text-muted">Each tier includes different capacity limits for traffic and event volume. You can create multiple instances with different tiers.</small>
-          </div>
+            <div className="form-group">
+              <label htmlFor="websiteUrl">{t('websiteUrlLabel')}</label>
+              <input id="websiteUrl" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://my-store.com" disabled={loading} />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="platformType">Platform Type</label>
-            <select
-              id="platformType"
-              value={platformType}
-              onChange={(e) => setPlatformType(e.target.value)}
-              disabled={loading}
-            >
-              <option value="ecommerce">E-commerce</option>
-              <option value="media">Media & Streaming</option>
-              <option value="marketplace">Marketplace</option>
-              <option value="custom">Custom API</option>
-            </select>
-          </div>
+            <div className="form-group">
+              <label htmlFor="description">{t('descriptionLabel')}</label>
+              <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder={t('phStoreDesc')} disabled={loading} />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="domains">Allowed Domains (Optional)</label>
-            <input
-              type="text"
-              id="domains"
-              value={domains}
-              onChange={(e) => setDomains(e.target.value)}
-              placeholder="https://yourstore.com, localhost"
-              disabled={loading}
-            />
-          </div>
-
-          <div className="form-actions">
-            <Link href="/dashboard" className="button-secondary">Cancel</Link>
-            <button type="submit" className="button-primary" disabled={loading || !instanceName.trim()}>
-              {loading ? 'Processing...' : 'Create Workspace'}
-            </button>
-          </div>
-        </form>
-      </section>
+            <div className="form-actions">
+              <Link href="/dashboard/instances" className="button-secondary">{t('cancelLabel')}</Link>
+              <button type="submit" className="button-primary" disabled={loading || !instanceName.trim()}>
+                {loading ? t('creatingLabel') : <><Plus size={18} /> {t('createInstanceBtn')}</>}
+              </button>
+            </div>
+          </form>
+        </section>
+      )}
     </main>
   );
 }

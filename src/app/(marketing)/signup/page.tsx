@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { Network } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
+import { useLanguage } from '@/context/LanguageContext';
 import './signup.css';
 
 export default function Signup() {
   const router = useRouter();
   const { signup, isLoggedIn } = useAuth();
+  const { t } = useLanguage();
   const [fullName, setFullName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
@@ -33,7 +35,7 @@ export default function Signup() {
       await signup(email, password, fullName, companyName);
       router.push('/dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to create account. Please try again.');
+      setError(err instanceof Error ? err.message : t('signupFailed'));
     }
     setLoading(false);
   };
@@ -43,40 +45,40 @@ export default function Signup() {
       <div className="signup-container glass">
         <div className="signup-header">
           <Network className="logo-icon center-icon" size={48} />
-          <h2>Create your account</h2>
-          <p>Create your account with email and password.</p>
+          <h2>{t('signupTitle')}</h2>
+          <p>{t('signupSubtitle')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="signup-form">
           {error && <p className="form-error">{error}</p>}
           <div className="form-group">
-            <label htmlFor="fullName">Full Name</label>
+            <label htmlFor="fullName">{t('signupFullName')}</label>
             <input
               type="text"
               id="fullName"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="John Doe"
+              placeholder={t('signupFullNamePh')}
               required
               disabled={loading}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="companyName">Company Name</label>
+            <label htmlFor="companyName">{t('signupCompany')}</label>
             <input
               type="text"
               id="companyName"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
-              placeholder="Acme Commerce"
+              placeholder={t('signupCompanyPh')}
               required
               disabled={loading}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('emailLabel')}</label>
             <input
               type="email"
               id="email"
@@ -89,7 +91,7 @@ export default function Signup() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('passwordLabel')}</label>
             <input
               type="password"
               id="password"
@@ -102,12 +104,12 @@ export default function Signup() {
           </div>
 
           <button type="submit" className="button-primary full-width" disabled={loading}>
-            {loading ? 'Creating Account...' : 'Sign Up'}
+            {loading ? t('signupLoading') : t('signupButton')}
           </button>
         </form>
 
         <p className="login-link">
-          Already have an account? <Link href="/login" className="text-primary">Log in here</Link>
+          {t('signupHaveAccount')} <Link href="/login" className="text-primary">{t('signupLoginLink')}</Link>
         </p>
       </div>
     </main>

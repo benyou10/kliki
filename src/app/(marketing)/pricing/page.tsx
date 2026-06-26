@@ -2,170 +2,132 @@
 
 import Link from 'next/link';
 import { Check, Zap, Globe, Shield, BarChart3, Lightbulb } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 import '../pricing/pricing.css';
+
+type Feature = { k: string; n?: string };
+type Cell = { k?: string; v?: string };
 
 const pricingPlans = [
   {
     name: 'Bronze',
-    description: 'Perfect for small boutiques and growing online stores',
+    descKey: 'planBronzeDesc',
     price: '8,000',
     currency: 'DA',
-    period: '/month',
-    yearlyPrice: '80,000 DA/year (Save 16.67%)',
-    badge: null,
+    yearly: '80,000',
+    badgeKey: null,
     features: [
-      'Up to 5,000 products',
-      'Up to 15,000 active users/month',
-      'Real-time recommendations',
-      'Basic analytics dashboard',
-      'Email support',
-      'API access',
-      'Instant deployment',
-    ],
-    cta: 'Get Started',
+      { k: 'pUpToProducts', n: '5,000' },
+      { k: 'pUpToUsers', n: '15,000' },
+      { k: 'fRealtime' },
+      { k: 'fBasicAnalytics' },
+      { k: 'fEmailSupport' },
+      { k: 'fApiAccess' },
+      { k: 'fInstantDeploy' },
+    ] as Feature[],
+    ctaKey: 'getStarted',
     highlighted: false,
-    specs: {
-      products: '5,000',
-      users: '15,000/mo',
-      support: 'Email',
-    },
+    specs: { products: '5,000', users: '15,000', supportKey: 'supEmail' },
   },
   {
     name: 'Argent',
-    description: 'For growing e-commerce platforms with multiple product lines',
+    descKey: 'planArgentDesc',
     price: '20,000',
     currency: 'DA',
-    period: '/month',
-    yearlyPrice: '200,000 DA/year (Save 16.67%)',
-    badge: 'POPULAR',
+    yearly: '200,000',
+    badgeKey: 'badgePopular',
     features: [
-      'Up to 20,000 products',
-      'Up to 40,000 active users/month',
-      'Advanced real-time recommendations',
-      'Advanced analytics & A/B testing',
-      'Priority email & chat support',
-      'Webhooks & custom events',
-      'Advanced API access',
-      'Custom engine tuning',
-    ],
-    cta: 'Get Started',
+      { k: 'pUpToProducts', n: '20,000' },
+      { k: 'pUpToUsers', n: '40,000' },
+      { k: 'fAdvRealtime' },
+      { k: 'fAdvAnalytics' },
+      { k: 'fPriorityChat' },
+      { k: 'fWebhooks' },
+      { k: 'fAdvApi' },
+      { k: 'fEngineTuning' },
+    ] as Feature[],
+    ctaKey: 'getStarted',
     highlighted: true,
-    specs: {
-      products: '20,000',
-      users: '40,000/mo',
-      support: 'Chat + Email',
-    },
+    specs: { products: '20,000', users: '40,000', supportKey: 'supChatEmail' },
   },
   {
     name: 'Or',
-    description: 'For established e-commerce platforms and marketplaces',
+    descKey: 'planOrDesc',
     price: '55,000',
     currency: 'DA',
-    period: '/month',
-    yearlyPrice: '550,000 DA/year (Save 16.67%)',
-    badge: null,
+    yearly: '550,000',
+    badgeKey: null,
     features: [
-      'Up to 50,000 products',
-      'Up to 80,000 active users/month',
-      'Multi-engine recommendations',
-      'Real-time analytics & insights',
-      'Priority support',
-      'Dedicated dashboard',
-      'Full API access + webhooks',
-      'Custom algorithmic matching',
-      'Multiple instance management',
-    ],
-    cta: 'Get Started',
+      { k: 'pUpToProducts', n: '50,000' },
+      { k: 'pUpToUsers', n: '80,000' },
+      { k: 'fMultiEngine' },
+      { k: 'fRealtimeInsights' },
+      { k: 'fPrioritySupport' },
+      { k: 'fDedicatedDash' },
+      { k: 'fFullApiWebhooks' },
+      { k: 'fAlgoMatching' },
+      { k: 'fMultiInstance' },
+    ] as Feature[],
+    ctaKey: 'getStarted',
     highlighted: false,
-    specs: {
-      products: '50,000',
-      users: '80,000/mo',
-      support: 'Priority',
-    },
+    specs: { products: '50,000', users: '80,000', supportKey: 'supPriority' },
   },
   {
     name: 'Platine',
-    description: 'For large-scale operations and enterprise requirements',
+    descKey: 'planPlatineDesc',
     price: '125,000',
     currency: 'DA',
-    period: '/month',
-    yearlyPrice: '1,250,000 DA/year (Save 16.67%)',
-    badge: 'ENTERPRISE',
+    yearly: '1,250,000',
+    badgeKey: 'badgeEnterprise',
     features: [
-      'Up to 100,000 products',
-      'Up to 150,000 active users/month',
-      'Unlimited recommendation engines',
-      'Real-time analytics & ML insights',
-      'Dedicated support team',
-      'Custom integrations',
-      'Full API access + GraphQL',
-      'White-label options',
-      'SLA guarantee',
-      'Custom ML models',
-      'Infrastructure consultation',
-    ],
-    cta: 'Contact Sales',
+      { k: 'pUpToProducts', n: '100,000' },
+      { k: 'pUpToUsers', n: '150,000' },
+      { k: 'fUnlimitedEngines' },
+      { k: 'fMlInsights' },
+      { k: 'fDedicatedTeam' },
+      { k: 'fCustomIntegrations' },
+      { k: 'fGraphql' },
+      { k: 'fWhiteLabel' },
+      { k: 'fSla' },
+      { k: 'fCustomMl' },
+      { k: 'fInfraConsult' },
+    ] as Feature[],
+    ctaKey: 'contactSales',
     highlighted: false,
-    specs: {
-      products: '100,000',
-      users: '150,000/mo',
-      support: '24/7 Dedicated',
-    },
+    specs: { products: '100,000', users: '150,000', supportKey: 'sup247' },
   },
 ];
 
-const comparisonFeatures = [
-  { category: 'Max Products', bronze: '5,000', argent: '20,000', or: '50,000', platine: '100,000' },
-  { category: 'Max Active Users/Month', bronze: '15,000', argent: '40,000', or: '80,000', platine: '150,000' },
-  { category: 'Real-time Recommendations', bronze: '✓', argent: '✓', or: '✓', platine: '✓' },
-  { category: 'Analytics', bronze: 'Basic', argent: 'Advanced + A/B Testing', or: 'Real-time + Insights', platine: 'ML Insights' },
-  { category: 'Support', bronze: 'Email', argent: 'Chat + Email', or: 'Priority', platine: '24/7 Dedicated' },
-  { category: 'Custom Integration', bronze: 'No', argent: 'Limited', or: 'Yes', platine: 'Full' },
-  { category: 'Webhooks', bronze: 'No', argent: 'Yes', or: 'Yes', platine: 'Yes' },
-  { category: 'API Rate Limit', bronze: 'Standard', argent: 'High', or: 'Very High', platine: 'Custom' },
-  { category: 'White Label', bronze: 'No', argent: 'No', or: 'Limited', platine: 'Yes' },
-  { category: 'Multi-Instance Management', bronze: 'Limited', argent: 'Yes', or: 'Yes', platine: 'Unlimited' },
+const comparisonFeatures: { catKey: string; vals: Cell[] }[] = [
+  { catKey: 'compMaxProducts', vals: [{ v: '5,000' }, { v: '20,000' }, { v: '50,000' }, { v: '100,000' }] },
+  { catKey: 'compMaxUsers', vals: [{ v: '15,000' }, { v: '40,000' }, { v: '80,000' }, { v: '150,000' }] },
+  { catKey: 'compRealtime', vals: [{ v: '✓' }, { v: '✓' }, { v: '✓' }, { v: '✓' }] },
+  { catKey: 'compAnalytics', vals: [{ k: 'valBasic' }, { k: 'valAdvancedAB' }, { k: 'valRealtimeInsights' }, { k: 'valMlInsights' }] },
+  { catKey: 'compSupport', vals: [{ k: 'supEmail' }, { k: 'supChatEmail' }, { k: 'supPriority' }, { k: 'sup247' }] },
+  { catKey: 'compCustomInt', vals: [{ k: 'valNo' }, { k: 'valLimited' }, { k: 'valYes' }, { k: 'valFull' }] },
+  { catKey: 'compWebhooks', vals: [{ k: 'valNo' }, { k: 'valYes' }, { k: 'valYes' }, { k: 'valYes' }] },
+  { catKey: 'compApiLimit', vals: [{ k: 'valStandard' }, { k: 'valHigh' }, { k: 'valVeryHigh' }, { k: 'valCustom' }] },
+  { catKey: 'compWhiteLabel', vals: [{ k: 'valNo' }, { k: 'valNo' }, { k: 'valLimited' }, { k: 'valYes' }] },
+  { catKey: 'compMultiInstance', vals: [{ k: 'valLimited' }, { k: 'valYes' }, { k: 'valYes' }, { k: 'valUnlimited' }] },
 ];
 
 const benefits = [
-  {
-    icon: Zap,
-    title: 'Instant Deployment',
-    description: 'No training phase required. Get recommendations running immediately.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Deep Analytics',
-    description: 'Understand recommendation impact on conversion and revenue in real-time.',
-  },
-  {
-    icon: Globe,
-    title: 'Hypergraph-Based',
-    description: 'Advanced mathematical framework for superior recommendation accuracy.',
-  },
-  {
-    icon: Shield,
-    title: 'Secure & Compliant',
-    description: 'Enterprise-grade security with data protection and privacy compliance.',
-  },
-  {
-    icon: Lightbulb,
-    title: 'Self-Optimizing',
-    description: 'Adapts to changing customer preferences in real-time.',
-  },
-  {
-    icon: Globe,
-    title: 'Localized Pricing',
-    description: 'Native Algerian Dinar billing for local businesses.',
-  },
+  { icon: Zap, titleKey: 'benInstantTitle', descKey: 'benInstantDesc' },
+  { icon: BarChart3, titleKey: 'benAnalyticsTitle', descKey: 'benAnalyticsDesc' },
+  { icon: Globe, titleKey: 'benAccurateTitle', descKey: 'benAccurateDesc' },
+  { icon: Shield, titleKey: 'benSecureTitle', descKey: 'benSecureDesc' },
+  { icon: Lightbulb, titleKey: 'benSelfTitle', descKey: 'benSelfDesc' },
+  { icon: Globe, titleKey: 'benLocalTitle', descKey: 'benLocalDesc' },
 ];
 
 export default function PricingPage() {
+  const { t } = useLanguage();
+
   return (
     <main className="pricing-main">
       <div className="pricing-header">
-        <h1>Simple, Transparent Pricing in Algerian Dinar</h1>
-        <p>Choose the plan that fits your recommendation engine needs. Each instance is independently priced with no hidden fees.</p>
+        <h1>{t('pricingTitle')}</h1>
+        <p>{t('pricingDesc')}</p>
       </div>
 
       {/* Pricing Cards */}
@@ -175,11 +137,11 @@ export default function PricingPage() {
             key={plan.name}
             className={`pricing-card glass ${plan.highlighted ? 'featured' : ''}`}
           >
-            {plan.badge && <div className="pricing-badge">{plan.badge}</div>}
-            
+            {plan.badgeKey && <div className="pricing-badge">{t(plan.badgeKey)}</div>}
+
             <div>
               <h3 className="pricing-title">{plan.name}</h3>
-              <p className="pricing-desc">{plan.description}</p>
+              <p className="pricing-desc">{t(plan.descKey)}</p>
             </div>
 
             <div>
@@ -187,22 +149,22 @@ export default function PricingPage() {
                 {plan.price}
                 <span className="currency">{plan.currency}</span>
               </div>
-              <div className="pricing-period">{plan.period}</div>
-              <div className="pricing-yearly">{plan.yearlyPrice}</div>
+              <div className="pricing-period">{t('pricingPerMonth')}</div>
+              <div className="pricing-yearly">{plan.yearly} {plan.currency}{t('pricingPerYear')} ({t('pricingYearlySave')})</div>
             </div>
 
             <div className="pricing-specs">
               <div className="spec-item">
-                <span className="spec-label">Max Products</span>
+                <span className="spec-label">{t('specProducts')}</span>
                 <span className="spec-value">{plan.specs.products}</span>
               </div>
               <div className="spec-item">
-                <span className="spec-label">Active Users</span>
-                <span className="spec-value">{plan.specs.users}</span>
+                <span className="spec-label">{t('specUsers')}</span>
+                <span className="spec-value">{plan.specs.users}{t('specPerMonth')}</span>
               </div>
               <div className="spec-item">
-                <span className="spec-label">Support</span>
-                <span className="spec-value">{plan.specs.support}</span>
+                <span className="spec-label">{t('specSupport')}</span>
+                <span className="spec-value">{t(plan.specs.supportKey)}</span>
               </div>
             </div>
 
@@ -210,13 +172,13 @@ export default function PricingPage() {
               {plan.features.map((feature, idx) => (
                 <div key={idx} className="feature-item">
                   <Check size={18} />
-                  <span>{feature}</span>
+                  <span>{feature.n ? t(feature.k).replace('{n}', feature.n) : t(feature.k)}</span>
                 </div>
               ))}
             </div>
 
             <Link href="/dashboard/instances/new" className="button-primary w-100">
-              {plan.cta}
+              {t(plan.ctaKey)}
             </Link>
           </div>
         ))}
@@ -224,15 +186,15 @@ export default function PricingPage() {
 
       {/* Benefits Section */}
       <section className="pricing-benefits">
-        <h2>Why Choose Kliki?</h2>
+        <h2>{t('benefitsTitle')}</h2>
         <div className="benefits-grid">
           {benefits.map((benefit, idx) => {
             const Icon = benefit.icon;
             return (
               <div key={idx} className="benefit-card glass">
                 <Icon size={32} className="benefit-icon" />
-                <h4>{benefit.title}</h4>
-                <p>{benefit.description}</p>
+                <h4>{t(benefit.titleKey)}</h4>
+                <p>{t(benefit.descKey)}</p>
               </div>
             );
           })}
@@ -241,10 +203,10 @@ export default function PricingPage() {
 
       {/* Comparison Table */}
       <section className="pricing-comparison">
-        <h2>Detailed Feature Comparison</h2>
+        <h2>{t('compTitle')}</h2>
         <div className="comparison-table glass">
           <div className="table-row header-row">
-            <div className="table-cell feature-col">Feature</div>
+            <div className="table-cell feature-col">{t('compFeature')}</div>
             <div className="table-cell">Bronze</div>
             <div className="table-cell">Argent</div>
             <div className="table-cell">Or</div>
@@ -252,11 +214,12 @@ export default function PricingPage() {
           </div>
           {comparisonFeatures.map((feature, idx) => (
             <div key={idx} className="table-row">
-              <div className="table-cell feature-col">{feature.category}</div>
-              <div className="table-cell">{feature.bronze}</div>
-              <div className="table-cell highlight">{feature.argent}</div>
-              <div className="table-cell">{feature.or}</div>
-              <div className="table-cell">{feature.platine}</div>
+              <div className="table-cell feature-col">{t(feature.catKey)}</div>
+              {feature.vals.map((cell, i) => (
+                <div key={i} className={`table-cell ${i === 1 ? 'highlight' : ''}`}>
+                  {cell.k ? t(cell.k) : cell.v}
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -264,11 +227,11 @@ export default function PricingPage() {
 
       {/* CTA Section */}
       <section className="pricing-cta glass">
-        <h2>Ready to Deploy Your Recommendation Engine?</h2>
-        <p>Each instance is independently managed and priced. Start with Bronze and scale as you grow.</p>
+        <h2>{t('pricingCtaTitle')}</h2>
+        <p>{t('pricingCtaDesc')}</p>
         <div className="cta-buttons">
-          <Link href="/signup" className="button-primary">Start Your First Instance</Link>
-          <a href="mailto:sales@kliki.io" className="button-secondary">Contact Sales</a>
+          <Link href="/signup" className="button-primary">{t('pricingCtaPrimary')}</Link>
+          <a href="mailto:sales@kliki.io" className="button-secondary">{t('contactSales')}</a>
         </div>
       </section>
     </main>
