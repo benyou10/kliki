@@ -134,6 +134,14 @@
 }
 
 @media (max-width: 480px) {
+  .footer-main {
+    padding: 4rem 0 1.5rem;
+  }
+
+  .footer-container {
+    gap: 2rem;
+  }
+
   .footer-links-group {
     grid-template-columns: 1fr;
   }

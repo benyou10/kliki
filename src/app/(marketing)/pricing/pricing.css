@@ -396,6 +396,35 @@
   }
 }
 
+@media (max-width: 640px) {
+  .pricing-main {
+    padding: 56px 16px;
+  }
+
+  .pricing-grid,
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-card,
+  .benefit-card,
+  .pricing-cta {
+    padding: 24px 18px;
+  }
+
+  .pricing-header h1 {
+    font-size: 1.9rem;
+  }
+
+  .comparison-table {
+    overflow-x: auto;
+  }
+
+  .table-row {
+    min-width: 620px;
+  }
+}
+
 /* NEW TIER-SPECIFIC STYLING */
 .pricing-yearly {
   font-size: 0.9rem;

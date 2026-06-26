@@ -834,3 +834,34 @@
     flex-direction: column;
   }
 }
+
+@media (max-width: 480px) {
+  .dashboard-main {
+    padding: 16px 12px 24px;
+  }
+
+  .dashboard-section,
+  .dashboard-hero {
+    padding: 20px 16px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .status-badge {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table-row {
+    padding: 16px 0;
+  }
+
+  .button-primary,
+  .button-secondary,
+  .button-outline,
+  .button-danger {
+    width: 100%;
+  }
+}

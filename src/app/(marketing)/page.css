@@ -570,3 +570,166 @@
     flex-direction: column;
   }
 }
+
+@media (max-width: 768px) {
+  .landing-main {
+    padding-top: 84px;
+  }
+
+  .hero-section {
+    min-height: auto;
+    gap: 32px;
+    padding-bottom: 48px;
+  }
+
+  .hero-content {
+    align-items: center;
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 11vw, 3rem);
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .hero-cta {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .hero-cta > * {
+    width: 100%;
+  }
+
+  .hero-visual {
+    display: none;
+  }
+
+  .comparison-card,
+  .pricing-card,
+  .benefit-card,
+  .segment-card,
+  .cta-box,
+  .contact-form,
+  .info-card {
+    padding: 24px 20px;
+  }
+
+  .comparison-grid,
+  .integrations-layout,
+  .contact-content {
+    gap: 24px;
+  }
+
+  .glass-section,
+  .segments-section,
+  .cta-section {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  .section-title,
+  .cta-box h2,
+  .pricing-header h1 {
+    font-size: 2rem;
+  }
+
+  .section-desc,
+  .cta-box p,
+  .pricing-header p {
+    font-size: 1rem;
+  }
+
+  .integrations-logos {
+    height: 280px;
+  }
+
+  .logo-float {
+    padding: 12px 20px;
+    font-size: 0.85rem;
+  }
+
+  .pricing-grid,
+  .benefits-grid,
+  .segments-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-price {
+    font-size: 2.4rem;
+  }
+
+  .pricing-comparison {
+    overflow-x: auto;
+  }
+
+  .comparison-table {
+    min-width: 640px;
+  }
+
+  .rees46-stat-card {
+    padding: 24px 20px;
+  }
+
+  .rees46-percentage {
+    font-size: 3.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-main {
+    padding-top: 76px;
+  }
+
+  .hero-badge {
+    font-size: 0.8rem;
+  }
+
+  .pricing-grid {
+    gap: 20px;
+  }
+
+  .integrations-logos {
+    height: 220px;
+  }
+
+  .logo-float {
+    padding: 10px 16px;
+    font-size: 0.78rem;
+  }
+
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 16px 18px;
+  }
+
+  .table-row.header-row {
+    display: none;
+  }
+
+  .table-cell.feature-col::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.72rem;
+    opacity: 0.5;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .contact-main {
+    padding-top: 104px;
+    padding-bottom: 72px;
+  }
+
+  .pricing-main,
+  .docs-main,
+  .login-main,
+  .signup-main {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

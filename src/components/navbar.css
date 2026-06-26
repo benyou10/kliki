@@ -219,4 +219,33 @@
   .nav-user-info {
     display: none;
   }
+
+  .navbar {
+    height: auto;
+    padding: 12px 0;
+  }
+
+  .navbar-container {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .navbar-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .navbar-actions {
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  .nav-button {
+    padding: 10px 16px;
+  }
 }

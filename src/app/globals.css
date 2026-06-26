@@ -307,3 +307,43 @@ a {
 .animate-slide-in {
   animation: slideIn 0.4s ease;
 }
+
+@media (max-width: 1200px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  .glass-section,
+  .segments-section,
+  .cta-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .button-primary,
+  .button-secondary,
+  .button-outline,
+  .button-danger {
+    width: 100%;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .section-header {
+    margin-bottom: 40px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+  }
+}

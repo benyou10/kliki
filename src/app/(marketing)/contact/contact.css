@@ -79,4 +79,34 @@
   .contact-content {
     flex-direction: column;
   }
+
+  .contact-main {
+    padding-top: 112px;
+    padding-bottom: 80px;
+  }
+
+  .contact-form,
+  .info-card {
+    padding: 28px 20px;
+  }
+
+  .contact-header {
+    margin-bottom: 40px;
+  }
+
+  .contact-form h2 {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-main {
+    padding-top: 96px;
+    padding-bottom: 64px;
+  }
+
+  .contact-form,
+  .info-card {
+    padding: 22px 18px;
+  }
 }
