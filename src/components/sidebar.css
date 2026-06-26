@@ -161,6 +161,7 @@
     transition: transform 0.25s ease;
     box-shadow: 24px 0 50px rgba(0, 0, 0, 0.35);
     background: rgba(10, 10, 14, 0.98);
+    z-index: 1200;
   }
 
   .dashboard-sidebar.open {
