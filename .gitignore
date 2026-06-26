@@ -1,0 +1,7 @@
+node_modules
+# Keep environment variables and local runtime data out of version control
+.env
+/dev.db
+.next
+
+/src/generated/prisma

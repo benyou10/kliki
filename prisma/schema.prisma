@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Client {
+  id          String        @id @default(uuid())
+  email       String        @unique
+  password    String
+  fullName    String        @default("")
+  companyName String        @map("companyName")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  instances   Workspace[]
+}
+
+model Workspace {
+  id                   String   @id @default(uuid())
+  name                 String
+  subscriptionTier     String   @default("Bronze") // Bronze, Argent, Or, Platine
+  instanceType         String   @default("ecommerce") // ecommerce, marketplace, saas, custom
+  platformType         String?
+  domains              String?
+  springBootInstanceId String   @unique
+  apiKey               String   @unique
+  status               String   @default("active") // active, paused, archived
+  clientId             String
+  client               Client   @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
