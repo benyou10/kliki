@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { Activity, Database, ListChecks, Target } from 'lucide-react';
 import './dashboard.css';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardOverview() {
   const client = await prisma.client.findFirst();
   const totalInstances = await prisma.workspace.count();

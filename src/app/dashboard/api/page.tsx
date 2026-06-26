@@ -3,6 +3,8 @@ import { Key, Terminal, ExternalLink, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import '../dashboard.css';
 
+export const dynamic = 'force-dynamic';
+
 function maskKey(key: string) {
   return key.replace(/.(?=.{4})/g, '*');
 }

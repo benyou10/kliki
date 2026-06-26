@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { Plus, Search, MoreVertical, Play, Settings2 } from 'lucide-react';
 import '../dashboard.css';
 
+export const dynamic = 'force-dynamic';
+
 export default async function EnginesPage() {
   const instances = await prisma.workspace.findMany({
     orderBy: { createdAt: 'desc' },

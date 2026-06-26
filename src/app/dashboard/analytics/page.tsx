@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { Info } from 'lucide-react';
 import '../dashboard.css';
 
+export const dynamic = 'force-dynamic';
+
 function formatLabel(count: number, singular: string, plural: string) {
   return `${count} ${count === 1 ? singular : plural}`;
 }

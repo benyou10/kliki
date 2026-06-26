@@ -3,6 +3,8 @@ import { Users, UserPlus, Shield, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 import '../dashboard.css';
 
+export const dynamic = 'force-dynamic';
+
 export default async function TeamPage() {
   const members = await prisma.client.findMany({
     orderBy: { createdAt: 'asc' },

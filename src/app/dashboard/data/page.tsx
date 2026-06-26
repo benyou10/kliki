@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import '../dashboard.css';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DataPage() {
   const totalInstances = await prisma.workspace.count();
   const sources = await prisma.workspace.findMany({

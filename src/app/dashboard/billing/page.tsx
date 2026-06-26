@@ -3,6 +3,8 @@ import { CreditCard, CheckCircle2, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 import '../dashboard.css';
 
+export const dynamic = 'force-dynamic';
+
 export default async function BillingPage() {
   const totalCustomers = await prisma.client.count();
   const totalInstances = await prisma.workspace.count();
