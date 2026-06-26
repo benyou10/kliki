@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Activity, 
   Cpu, 
@@ -12,7 +12,9 @@ import {
   FileCode, 
   Users, 
   Settings, 
-  LogOut 
+  LogOut,
+  Menu,
+  X,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -20,6 +22,11 @@ import './sidebar.css';
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   const navItems = [
     { name: 'Overview', icon: <Activity size={20} />, path: '/dashboard' },
@@ -35,31 +42,51 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="dashboard-sidebar">
-      <Link href="/" className="sidebar-header">
-        <div className="logo-mask-container sidebar-logo-size"></div>
-        <span className="logo-text">Kliki</span>
-      </Link>
-      
-      <nav className="sidebar-nav">
-        {navItems.map((item) => (
-          <Link 
-            key={item.path} 
-            href={item.path} 
-            className={`nav-item ${pathname === item.path ? 'active' : ''}`}
-          >
-            {item.icon}
-            {item.name}
-          </Link>
-        ))}
-      </nav>
+    <>
+      <button
+        type="button"
+        className="sidebar-mobile-toggle"
+        onClick={() => setMobileOpen((current) => !current)}
+        aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={mobileOpen}
+        aria-controls="dashboard-sidebar"
+      >
+        {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+      </button>
 
-      <div className="sidebar-footer">
-        <Link href="/" className="nav-item logout">
-          <LogOut size={20} />
-          Back to site
+      <div
+        className={`sidebar-overlay ${mobileOpen ? 'open' : ''}`}
+        onClick={() => setMobileOpen(false)}
+        aria-hidden="true"
+      />
+
+      <aside id="dashboard-sidebar" className={`dashboard-sidebar ${mobileOpen ? 'open' : ''}`}>
+        <Link href="/" className="sidebar-header">
+          <div className="logo-mask-container sidebar-logo-size"></div>
+          <span className="logo-text">Kliki</span>
         </Link>
-      </div>
-    </aside>
+        
+        <nav className="sidebar-nav">
+          {navItems.map((item) => (
+            <Link 
+              key={item.path} 
+              href={item.path} 
+              className={`nav-item ${pathname === item.path ? 'active' : ''}`}
+              onClick={() => setMobileOpen(false)}
+            >
+              {item.icon}
+              {item.name}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="sidebar-footer">
+          <Link href="/" className="nav-item logout" onClick={() => setMobileOpen(false)}>
+            <LogOut size={20} />
+            Back to site
+          </Link>
+        </div>
+      </aside>
+    </>
   );
 }

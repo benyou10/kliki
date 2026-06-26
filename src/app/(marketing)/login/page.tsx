@@ -31,9 +31,9 @@ export default function Login() {
       await login(email, password);
       router.push('/dashboard');
     } catch (err) {
-      setError('Login failed. Please try again.');
-      setLoading(false);
+      setError(err instanceof Error ? err.message : 'Login failed. Please try again.');
     }
+    setLoading(false);
   };
 
   return (

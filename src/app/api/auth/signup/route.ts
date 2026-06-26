@@ -13,43 +13,50 @@ async function validateSignupPayload(payload: any) {
 }
 
 export async function POST(request: Request) {
-  const payload = await request.json().catch(() => null);
-  const validationError = await validateSignupPayload(payload);
-  if (validationError) {
-    return new Response(JSON.stringify({ error: validationError }), {
-      status: 400,
+  try {
+    const payload = await request.json().catch(() => null);
+    const validationError = await validateSignupPayload(payload);
+    if (validationError) {
+      return new Response(JSON.stringify({ error: validationError }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const normalizedEmail = payload.email.trim().toLowerCase();
+    const fullName = typeof payload.fullName === 'string' ? payload.fullName.trim() : typeof payload.name === 'string' ? payload.name.trim() : '';
+    const companyName = typeof payload.companyName === 'string' ? payload.companyName.trim() : typeof payload.company === 'string' ? payload.company.trim() : '';
+
+    const existingUser = await prisma.client.findUnique({
+      where: { email: normalizedEmail },
+    });
+
+    if (existingUser) {
+      return new Response(JSON.stringify({ error: 'An account with this email already exists.' }), {
+        status: 409,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(payload.password, 10);
+
+    const user = await prisma.client.create({
+      data: {
+        fullName,
+        companyName,
+        email: normalizedEmail,
+        password: hashedPassword,
+      },
+    });
+
+    return new Response(JSON.stringify({ id: user.id, email: user.email }), {
+      status: 201,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch {
+    return new Response(JSON.stringify({ error: 'Signup temporarily unavailable.' }), {
+      status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
   }
-
-  const normalizedEmail = payload.email.trim().toLowerCase();
-  const fullName = typeof payload.fullName === 'string' ? payload.fullName.trim() : typeof payload.name === 'string' ? payload.name.trim() : '';
-  const companyName = typeof payload.companyName === 'string' ? payload.companyName.trim() : typeof payload.company === 'string' ? payload.company.trim() : '';
-
-  const existingUser = await prisma.client.findUnique({
-    where: { email: normalizedEmail },
-  });
-
-  if (existingUser) {
-    return new Response(JSON.stringify({ error: 'An account with this email already exists.' }), {
-      status: 409,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  const hashedPassword = await bcrypt.hash(payload.password, 10);
-
-  const user = await prisma.client.create({
-    data: {
-      fullName,
-      companyName,
-      email: normalizedEmail,
-      password: hashedPassword,
-    },
-  });
-
-  return new Response(JSON.stringify({ id: user.id, email: user.email }), {
-    status: 201,
-    headers: { 'Content-Type': 'application/json' },
-  });
 }

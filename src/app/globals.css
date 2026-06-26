@@ -71,6 +71,24 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+img,
+video,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+main {
+  min-width: 0;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -251,6 +269,29 @@ a {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .glass {
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 14px;
+  }
+
+  .button-primary,
+  .button-secondary,
+  .button-outline,
+  .button-danger {
+    width: 100%;
+  }
 }
 
 .flex {

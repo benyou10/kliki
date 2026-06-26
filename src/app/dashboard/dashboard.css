@@ -11,49 +11,90 @@
   background: var(--background);
 }
 
+.dashboard-content-area > * {
+  min-width: 0;
+}
+
 .dashboard-main {
   padding: 40px;
   max-width: 1400px;
+    .dashboard-content-area {
+      margin-left: 220px;
+    }
+
   margin: 0 auto;
   animation: fadeIn 0.5s ease;
 }
 
 .dashboard-header {
   display: flex;
+    .dashboard-wrapper {
+      display: block;
+    }
+
+    .dashboard-content-area {
+      margin-left: 0;
+      padding-top: 72px;
+    }
+
+    .dashboard-main {
+      padding: 24px 16px 32px;
+    }
+
   justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 24px;
+      width: 280px;
   margin-bottom: 40px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--surface-border);
-}
 
-.dashboard-header h1 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  margin-bottom: 8px;
-}
+    .dashboard-header,
+    .dashboard-hero,
+    .dashboard-content-grid,
+    .kpi-grid {
+      gap: 20px;
+    }
 
-.subtitle {
-  color: var(--foreground);
-  opacity: 0.6;
-  font-size: 1rem;
-  line-height: 1.5;
-}
+    .dashboard-hero,
+    .dashboard-section,
+    .metric-card,
+    .kpi-card,
+    .dashboard-status-card {
+      padding: 20px;
+    }
 
-/* HERO SECTION */
-.dashboard-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(240px, 1fr);
-  gap: 32px;
-  padding: 40px;
-  margin-bottom: 40px;
+    .dashboard-hero,
+    .dashboard-content-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dashboard-header h1,
+    .dashboard-hero h1 {
+      font-size: 1.8rem;
+    }
+
+    .metric-grid {
+      grid-template-columns: 1fr;
+    }
   border-radius: 20px;
   border: 1.5px solid var(--surface-border);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    .dashboard-main {
+      padding: 20px 14px 28px;
+    }
+
+    .dashboard-header h1,
+    .dashboard-hero h1 {
+      font-size: 1.5rem;
+    }
+
+    .dashboard-section,
+    .dashboard-hero,
+    .kpi-card,
+    .metric-card,
+    .dashboard-status-card {
+      padding: 16px;
+    }
+
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
-  position: relative;
+      gap: 12px;
   overflow: hidden;
 }
 

@@ -38,17 +38,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    // In a real app, this would call your API
-    // For now, simulate the login
-    const mockClient: Client = {
-      id: 'mock-id-' + Date.now(),
-      email,
-      fullName: 'User',
-      companyName: 'Company',
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const result = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      throw new Error(result?.error || 'Unable to sign in.');
+    }
+
+    const loggedInClient: Client = {
+      id: result.id,
+      email: result.email,
+      fullName: result.fullName || '',
+      companyName: result.companyName || '',
     };
-    setClient(mockClient);
+
+    setClient(loggedInClient);
     setIsLoggedIn(true);
-    localStorage.setItem('authClient', JSON.stringify(mockClient));
+    localStorage.setItem('authClient', JSON.stringify(loggedInClient));
   };
 
   const signup = async (email: string, password: string, fullName: string, companyName: string) => {

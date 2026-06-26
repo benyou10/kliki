@@ -33,9 +33,9 @@ export default function Signup() {
       await signup(email, password, fullName, companyName);
       router.push('/dashboard');
     } catch (err) {
-      setError('Unable to create account. Please try again.');
-      setLoading(false);
+      setError(err instanceof Error ? err.message : 'Unable to create account. Please try again.');
     }
+    setLoading(false);
   };
 
   return (
